@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Ventas</h1>
+
+<a href="{% url 'ventas:registrar_venta' %}">Registrar Venta</a>
+<a href="{% url 'ventas:listar_ventas' %}">Listar Ventas</a>
+
+
+
+{% endblock content %}

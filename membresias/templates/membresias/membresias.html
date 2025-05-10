@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'membresias/css/membresias.css' %}">
+{% endblock extra_head %}
+
+
+{% block content %}
+<h1>Membresías</h1>
+
+<div class="barra_sup">
+    <input type="text" id="search" placeholder="Buscar membresía...">
+    <a href="{% url 'membresias:crear_membresia' %}" class="reg_producto">Registrar membresía</a>
+</div>
+
+<div class="table_container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID del Cliente</th>
+                <th>Cliente</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de vencimiento</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for membresia in membresias %}
+            <tr>
+                <td>{{ membresia.cliente.id }}</td>
+                <td>{{ membresia.cliente }}</td>
+                <td>{{ membresia.fecha_inicio }}</td>
+                <td>{{ membresia.fecha_vencimiento }}</td>
+                <td>{{ membresia.activa|yesno:"Activa,Inactiva" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="no_products">No hay membresías registradas</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content%}

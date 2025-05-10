@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'usuarios/css/lista.css' %}">
+{% endblock extra_head %}
+
+{% block content %}
+
+<h2>Usuarios registrados</h2>
+
+<div class="barra_sup">
+    <input type="text" id="search" placeholder="Buscar usuario...">
+    <a href="{% url 'usuarios:registrar_usuario' %}" class="reg_producto">Registrar otro usuario</a>
+</div>
+
+<div class="table_container">
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>{{ usuario.rol }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="no_products">No hay usuarios registrados</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+  const searchInput = document.getElementById("search");
+  const filas = document.querySelectorAll("tbody tr");
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    filas.forEach(fila => {
+      const textoFila = fila.textContent.toLowerCase();
+      if (textoFila.includes(searchTerm)) {
+        fila.style.display = "";
+      } else {
+        fila.style.display = "none";
+      }
+    });
+  });
+</script>
+
+
+
+{% endblock content %}

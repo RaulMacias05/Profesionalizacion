@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ventas/css/listar_ventas.css' %}">
+{% endblock extra_head %}
+
+{% block title %}Ventas{% endblock title %}
+
+{% block content %}
+<h1>Ventas</h1>
+
+<div class="barra_sup">
+  <input type="text" id="search" placeholder="Buscar venta...">
+  <a href="{% url 'ventas:registrar_venta' %}" class="reg_producto">Registrar Venta</a>
+</div>
+
+<div class="table_container">
+  <table>
+    <colgroup>
+      <col style="width: 3%">
+      <col style="width: 10%">
+      <col>
+      <col style="width: 7%">
+      <col>
+      <col style="width: 7%">
+      <col style="width: 7%">
+
+    </colgroup>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario responsable</th>
+        <th>Fecha</th>
+        <th>Monto Total</th>
+        <th>Método de pago</th>
+        <th>Monto Pagado</th>
+        <th>Cambio Entregado</th>
+        <th>Productos</th>
+        {% comment %} <th>Detalles</th> {% endcomment %}
+        {% comment %} <th>Cliente</th> {% endcomment %}
+      </tr>
+    </thead>
+    <tbody id="ventas_table_body">
+      {% for venta in ventas %}
+      <tr class="venta" data-id="{{ venta.id }}">
+        <td>{{ venta.id }}</td>
+        <td>{{ venta.usuario.username }}</td>
+        {% comment %} <td>{{ venta.cliente }}</td> {% endcomment %}
+        <td>{{ venta.fecha_venta }}</td>
+        <td>${{ venta.monto_total }}</td>
+        <td>{{ venta.metodo_pago }}</td>
+        <td>${{ venta.monto_pagado }}</td>
+        <td>${{ venta.cambio }}</td>
+        <td>
+          <ul class="productos">
+            {% for producto in venta.productos.all %}
+            <li>{{ producto.nombre }}</li>
+            {% endfor %}
+          </ul>
+        </td>
+        {% comment %} <td><a href="{% url 'ventas:detalles_venta' venta.id %}">Ver Detalles</a></td> {% endcomment %}
+      </tr>
+  
+      {% empty %}
+      <tr>
+        <td colspan="8" class="no_products">No hay ventas registradas.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  const searchInput = document.getElementById("search");
+  const ventasTableBody = document.getElementById("ventas_table_body");
+  const ventasRows = ventasTableBody.querySelectorAll(".venta");
+  const productos = ventasTableBody.querySelectorAll(".productos");
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+    ventasRows.forEach(row => {
+      const cells = row.querySelectorAll("td");
+      let found = false;
+      cells.forEach(cell => {
+        if (cell.textContent.toLowerCase().includes(searchTerm)) {
+          found = true;
+        }
+      });
+      if (found) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  });
+
+  productos.forEach(producto => {
+    if (producto.children.length > 1) {
+      producto.style.justifyContent = "flex-start";
+      producto.style.borderBottom = "1px solid var(--header-bg-color)";
+    }
+  });
+</script>
+
+{% endblock scripts %}

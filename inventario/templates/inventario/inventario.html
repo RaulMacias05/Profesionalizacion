@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'inventario/css/inventario.css' %}">
+{% endblock extra_head %}
+
+{% block title %}Inventario{% endblock title %}
+
+{% block content %}
+<h1>Inventario</h1>
+<div class="barra_sup">
+  <input type="text" id="search" placeholder="Buscar producto...">
+  <a href="{% url 'inventario:crear_producto' %}" class="reg_producto">Registrar Producto</a>
+</div>
+
+<div class="table_container">
+  <table>
+    <thead>
+      <tr>
+        <th>Imagen</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Descripción</th>
+        <th>Stock</th>
+        <th>Activo</th>
+        <th>Fecha de Creación</th>
+        <th>Fecha de Modificación</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for producto in productos %}
+      <tr class="producto">
+        <td><img src="{{ producto.imagen.url }}" width="100"></td>
+        <td id="prod_nombre">{{ producto.nombre }}</td>
+        <td>${{ producto.precio }}</td>
+        <td>{{ producto.descripcion }}</td>
+        <td>{{ producto.stock }}</td>
+        <td>{{ producto.is_active }}</td>
+        <td>{{ producto.fecha_creacion }}</td>
+        <td>{{ producto.fecha_modificacion }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8" class="no_products">No hay productos disponibles.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script>
+  const searchInput = document.getElementById("search");
+  const productos = document.querySelectorAll(".producto");
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    productos.forEach(producto => {
+      const nombre = producto.querySelector("#prod_nombre").textContent.toLowerCase();
+      if (nombre.includes(searchTerm)) {
+        producto.style.display = "block";
+      } else {
+        producto.style.display = "none";
+      }
+    });
+  });
+</script>
+
+{% endblock scripts %}

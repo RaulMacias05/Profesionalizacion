@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'usuarios/css/registro.css' %}">
+{% endblock extra_head %}
+
+
+{% block content %}
+
+<h2>Registrar nuevo usuario</h2>
+
+<form method="post" class="registro-form">
+  {% csrf_token %}
+  
+  <div class="campo">
+    <label for="first_name">Nombre:</label>
+    {{ form.first_name }}
+  </div>
+
+  <div class="campo">
+    <label for="primer_apellido">Primer Apellido:</label>
+    {{ form.primer_apellido }}
+  </div>
+
+  <div class="campo">
+    <label for="segundo_apellido">Segundo Apellido:</label>
+    {{ form.segundo_apellido }}
+  </div>
+
+  <div class="campo">
+    <label for="telefono">Teléfono:</label>
+    {{ form.telefono }}
+  </div>
+
+  <div class="campo">
+    <label for="email">Correo Electrónico:</label>
+    {{ form.email }}
+  </div>
+
+  <div class="campo">
+    <label for="rol">Rol:</label>
+    {{ form.rol }}
+  </div>
+
+  <div class="campo">
+    <label for="username">Nombre de usuario:</label>
+    {{ form.username }}
+  </div>
+
+  <div class="campo">
+    <label for="password1">Contraseña:</label>
+    {{ form.password1 }}
+  </div>
+
+  <div class="campo">
+    <label for="password2">Confirmar Contraseña:</label>
+    {{ form.password2 }}
+  </div>
+
+  <button type="submit">Registrar</button>
+</form>
+
+
+{% endblock content %}

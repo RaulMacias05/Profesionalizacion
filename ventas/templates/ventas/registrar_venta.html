@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ventas/css/reg_venta.css' %}">
+{% endblock extra_head %}
+
+{% block title %}Ventas{% endblock title %}
+
+{% block content %}
+
+<h1>Registrar Venta</h1>
+<div class="buscador">
+  <input type="text" id="search" placeholder="Buscar producto...">
+</div>
+
+<div class="productos_container">
+  
+  {% for producto in productos %}
+  <div class="producto" data-id="{{ producto.idproducto }}" id="prod_{{ producto.idproducto }}">
+    <img src="{{ producto.imagen.url }}" width="200">
+    <h3>{{ producto.nombre }}</h3>
+    <p>Precio: ${{ producto.precio }}</p>
+  </div>
+  {% empty %}
+  <div class="no_products">Es necesario registrar productos en el inventario.</div>
+  {% endfor %}
+    
+</div>
+
+<div class="bottom">
+  <div id="venta_container" class="venta_container">
+    <button id="btn_registrar_venta">Registrar venta</button>
+    <p id="total_text">Total: $0.00</p>
+  </div>
+</div>
+
+<!-- filepath: c:\Users\steme\OneDrive\Documents\Sexto Semestre\Metodologías del Desarrollo de Software\PIA\Spartan-Gym\ventas\templates\ventas\registrar_venta.html -->
+<div class="venta_modal" id="venta_modal">
+  <h2>Registrar Venta</h2>
+  <form id="venta_form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p id="cambio_text">Cambio: </p>
+    <button type="button" id="confirmar_venta">Confirmar Venta</button>
+    <button type="button" id="cancelar_venta">Cancelar</button>
+  </form>
+</div>
+<div class="modal_overlay" id="modal_overlay"></div>
+{% endblock content %}
+
+
+
+{% block scripts %}
+<script>
+  const registrarVentaUrl = "{% url 'ventas:registrar_venta' %}";
+</script>
+<script src="{% static 'ventas/js/registrar_venta.js' %}"></script>
+{% endblock scripts %}
