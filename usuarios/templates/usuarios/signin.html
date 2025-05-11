@@ -1,0 +1,30 @@
+{% extends 'sesion.html' %}
+
+{% load static %}
+
+{% block title %}Registro{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'usuarios/css/login.css' %}">
+{% endblock extra_head %}
+
+{% block content %}
+
+<form method="post">
+    <img src="{% static 'img/helmet-weights.png' %}" alt="Logo Gimnasio" class="logo">
+    <h2>Inicio de Sesión</h2>
+
+    {% csrf_token %}
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+    {{ form }}
+    <button>Iniciar Sesión</button>
+    <button type="button" onclick="location.href='{% url 'usuarios:registrar_usuario' %}'">Crear una cuenta</button>
+</form>
+
+{% endblock content %}
+
+{% block extra_scripts %}
+{% endblock extra_scripts %}
