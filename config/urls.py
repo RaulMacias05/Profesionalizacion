@@ -24,10 +24,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('usuarios/', include('usuarios.urls')),
     path('ventas/', include('ventas.urls')),
-    path('membresias/', include('membresias.urls')),
-    path('clientes/', include('clientes.urls')),
     path('inventario/', include('inventario.urls')),
-    path('reportes/', include('reportes.urls')),
 ]
 
 if settings.DEBUG:

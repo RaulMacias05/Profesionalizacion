@@ -4,8 +4,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from ventas.models import Venta
-from clientes.models import Clientes
-from membresias.models import Membresia
 
 # Create your views here.
 def signin(request):
@@ -29,13 +27,9 @@ def signin(request):
 def inicio(request):
     ventas = Venta.objects.all()
     ventas_hoy = sum(1 for i in ventas.filter(fecha_venta__date=datetime.today().date()))
-    total_clientes = Clientes.objects.count()
-    total_membresias_activas = Membresia.objects.filter(activa=True).count()
 
     return render(request, 'core/inicio.html', {
         'ventas_hoy': ventas_hoy,
-        'total_clientes': total_clientes,
-        'total_membresias_activas': total_membresias_activas    
     })
 
 
