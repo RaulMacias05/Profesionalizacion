@@ -17,7 +17,7 @@
 
 <div class="productos_container">
   <div class="productos">
-    <div class="producto">
+    <div class="producto" data-id="1" data-precio="16499">
       <img src="{% static 'img/laptop_inspiron.jpg' %}" alt="">
       <h3>Laptop Dell Inspiron 15</h3>
       <p>
@@ -29,11 +29,16 @@
         <b>Garantía:</b> 4 años
       </p>
       <p><b>Precio:</b> $16,499 MXN</p>
+      <div class="cantidad-control">
+        <button class="restar">−</button>
+        <span class="cantidad">0</span>
+        <button class="sumar">+</button>
+      </div>
     </div>
   </div>
   
   <div class="productos">
-    <div class="producto">
+    <div class="producto" data-id="2" data-precio="2199">
       <img src="{% static 'img/router.jpg' %}" alt="">
       <h3>Router TP-Link AX1800</h3>
       <p>
@@ -45,11 +50,16 @@
         <b>Garantía:</b> 1 año
       </p>
       <p><b>Precio:</b> $2,199 MXN</p>
+      <div class="cantidad-control">
+        <button class="restar">−</button>
+        <span class="cantidad">0</span>
+        <button class="sumar">+</button>
+      </div>
     </div>
   </div>
   
   <div class="productos">
-    <div class="producto">
+    <div class="producto" data-id="3" data-precio="1899">
       <img src="{% static 'img/discoduro.jpg' %}" alt="">
       <h3>Disco Duro Externo 2TB</h3>
       <p>
@@ -62,11 +72,16 @@
         <b>Garantía:</b> 1 año
       </p>
       <p><b>Precio:</b> $1,899 MXN</p>
+      <div class="cantidad-control">
+        <button class="restar">−</button>
+        <span class="cantidad">0</span>
+        <button class="sumar">+</button>
+      </div>
     </div>
   </div>
   
   <div class="productos">
-    <div class="producto">
+    <div class="producto" data-id="4" data-precio="20999">
       <img src="{% static 'img/monitor.jpg' %}" alt="">
       <h3>Monitor LG 24” Full HD</h3>
       <p>
@@ -76,11 +91,16 @@
         <b>Garantía:</b> 5 año
       </p>
       <p><b>Precio:</b> $20,999 MXN</p>
+      <div class="cantidad-control">
+        <button class="restar">−</button>
+        <span class="cantidad">0</span>
+        <button class="sumar">+</button>
+      </div>
     </div>
   </div>
   
   <div class="productos">
-    <div class="producto">
+    <div class="producto" data-id="5" data-precio="3299">
       <img src="{% static 'img/kit.jpg' %}" alt="">
       <h3>Kit de Teclado y Mouse Inalámbrico Logitech</h3>
       <p>
@@ -95,11 +115,16 @@
         <b>Garantía:</b> 1 año
       </p>
       <p><b>Precio:</b> $3,299 MXN</p>
+      <div class="cantidad-control">
+        <button class="restar">−</button>
+        <span class="cantidad">0</span>
+        <button class="sumar">+</button>
+      </div>
     </div>
   </div>
   
   <div class="productos">
-    <div class="producto">
+    <div class="producto" data-id="6" data-precio="5000">
       <img src="{% static 'img/audifonos.jpg' %}" alt="">
       <h3>Audífonos con micrófono Jabra</h3>
       <p>
@@ -113,28 +138,57 @@
         <b>Garantía:</b> 1 año
       </p>
       <p><b>Precio:</b> $5,000 MXN</p>
+      <div class="cantidad-control">
+        <button class="restar">−</button>
+        <span class="cantidad">0</span>
+        <button class="sumar">+</button>
+      </div>
     </div>
   </div>
 </div>
 
+<div class="bottom">
+  <div id="venta_container" class="venta_container">
+    <button id="btn_cancelar_venta">Cancelar</button>
+    <button id="btn_registrar_venta">Pagar</button>
+    <p id="subtotal_text">Subtotal: $0.00</p>
+    <p id="iva_text">IVA (16%): $0.00</p>
+    <p id="total_text">Total: $0.00</p>
+  </div>
+</div>
 
-<script>
-  const searchInput = document.getElementById("search");
-  const productos = document.querySelectorAll(".producto");
+<div class="venta_modal" id="venta_modal">
+  <h2>Ticket de venta</h2>
+  <div class="ticket_list" id="ticket_list">
+    <!-- Lista de productos se llenará aquí -->
+  </div>
+  <div class="totales">
+    <div>Subtotal:</div> <div id="modal_subtotal">$0.00</div>
+  </div>
+  <div class="totales">
+    <div>IVA (16%):</div> <div id="modal_iva">$0.00</div>
+  </div>
+  <div class="totales" style="font-size:18px;">
+    <div><b>Total:</b></div> <div id="modal_total"><b>$0.00</b></div>
+  </div>
 
-  searchInput.addEventListener("input", function () {
-    const searchTerm = searchInput.value.toLowerCase();
+  <form id="venta_form" method="post">
+    {% csrf_token %}
+    <button type="button" id="confirmar_venta">Confirmar Compra</button>
+    <button type="button" id="cancelar_venta">Cancelar</button>
+  </form>
+</div>
+<div class="modal_overlay" id="modal_overlay"></div>
 
-    productos.forEach(producto => {
-      const nombre = producto.querySelector("h3").textContent.toLowerCase();
-      if (nombre.includes(searchTerm)) {
-        producto.style.display = "block";
-      } else {
-        producto.style.display = "none";
-      }
-    });
-  });
-</script>
+
+
 
 
 {% endblock content %}
+
+{% block scripts %}
+<script>
+  const registrarVentaUrl = "{% url 'ventas:registrar_venta_copy' %}";
+</script>
+<script src="{% static 'ventas/js/registrar_venta_prof.js' %}"></script>
+{% endblock scripts %}

@@ -132,3 +132,69 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
+
+.producto.selected {
+  border: 2px solid green;
+}
+
+.venta_modal h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Lista de productos */
+.ticket_list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+/* Sección de totales */
+.totales {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 16px;
+  color: #444;
+}
+
+/* Botones del formulario */
+#venta_form {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#venta_form button {
+  padding: 10px 20px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#confirmar_venta {
+  background-color: #28a745;
+  color: white;
+}
+
+#confirmar_venta:hover {
+  background-color: #218838;
+}
+
+#cancelar_venta {
+  background-color: #ccc;
+  color: #333;
+}
+
+#cancelar_venta:hover {
+  background-color: #b3b3b3;
+}
+
