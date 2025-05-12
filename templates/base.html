@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    {% comment %} <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee+Spice&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee+Spice&display=swap" rel="stylesheet"> {% endcomment %}
 
     <title>{% block title %}Spartan Gym{% endblock title %}</title>
     {% block extra_head %}{% endblock extra_head %}
@@ -16,21 +16,18 @@
 <body>
     <header>
         <nav class="sidebar">
-            <div class="title">
-                <img src="{% static 'img/logospartan.png' %}" alt="Logo Gimnasio" class="logo">
-                <h2>Sistema de operaciones</h2>
-            </div>
+            
             <ul>
                 <li><a href="{% url 'core:inicio' %}">Inicio</a></li>
-                <li><a href="{% url 'usuarios:usuarios' %}">Usuarios</a></li>
-                <li><a href="{% url 'ventas:listar_ventas' %}">Ventas</a></li>
+                <li><a href="{% url 'ventas:registrar_venta' %}">Ventas</a></li>
                 <li><a href="{% url 'inventario:inventario' %}">Inventario</a></li>
-            </ul>
-            <div class="logout_cont">
                 <a href="{% url 'usuarios:signout' %}" class="logout">Cerrar Sesión</a>
-            </div>
+            </ul>
         </nav>
     </header>
+    <div class="title">
+        <h2>Realiza compras seguras</h2>
+    </div>
     <section class="content">
         {% block content %}{% endblock content %}
     </section>
