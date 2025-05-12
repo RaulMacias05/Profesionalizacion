@@ -51,4 +51,7 @@ def registrar_venta(request):
             'productos': Producto.objects.all(),
             'form': form
         })
-        
+    
+
+def registrar_venta_copy(request):
+    return render(request, 'ventas/registrar_venta_copy.html')

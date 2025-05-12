@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ventas/css/reg_venta_copy.css' %}">
+{% endblock extra_head %}
+
+
+{% block content %}
+
+<h1>Registrar Venta</h1>
+
+<div class="buscador">
+  <input type="text" id="search" placeholder="Buscar producto...">
+</div>
+
+<div class="productos_container">
+  <div class="productos">
+    <div class="producto">
+      <img src="{% static 'img/laptop_inspiron.jpg' %}" alt="">
+      <h3>Laptop Dell Inspiron 15</h3>
+      <p>
+        <b>Descripción:</b> Computadora portátil con procesador Intel Core i5 de 12ª
+        generación, 16 GB de RAM, SSD de 512 GB y pantalla Full HD de
+        15.6”.
+      </p>
+      <p>
+        <b>Garantía:</b> 4 años
+      </p>
+      <p><b>Precio:</b> $16,499 MXN</p>
+    </div>
+  </div>
+  
+  <div class="productos">
+    <div class="producto">
+      <img src="{% static 'img/router.jpg' %}" alt="">
+      <h3>Router TP-Link AX1800</h3>
+      <p>
+        <b>Descripción:</b> Router de doble banda con tecnología Wi-Fi 6.
+      <p><b>Conectividad:</b> Wi-Fi, USB</p>
+      <p><b>Compatibilidad:</b> Windows, macOS, Android, iOS</p>
+  
+      <p>
+        <b>Garantía:</b> 1 año
+      </p>
+      <p><b>Precio:</b> $2,199 MXN</p>
+    </div>
+  </div>
+  
+  <div class="productos">
+    <div class="producto">
+      <img src="{% static 'img/discoduro.jpg' %}" alt="">
+      <h3>Disco Duro Externo 2TB</h3>
+      <p>
+        <b>Descripción:</b>Almacenamiento portátil USB 3.0, perfecto para respaldos y
+        transferencia de grandes volúmenes de información.
+      </p>
+      <p><b>Compatibilidad:</b> Windows, macOS, Android, iOS</p>
+  
+      <p>
+        <b>Garantía:</b> 1 año
+      </p>
+      <p><b>Precio:</b> $1,899 MXN</p>
+    </div>
+  </div>
+  
+  <div class="productos">
+    <div class="producto">
+      <img src="{% static 'img/monitor.jpg' %}" alt="">
+      <h3>Monitor LG 24” Full HD</h3>
+      <p>
+        <b>Descripción:</b> Monitor IPS con resolución 1920x1080. Incluye puertos HDMI y VGA
+      </p>
+      <p>
+        <b>Garantía:</b> 5 año
+      </p>
+      <p><b>Precio:</b> $20,999 MXN</p>
+    </div>
+  </div>
+  
+  <div class="productos">
+    <div class="producto">
+      <img src="{% static 'img/kit.jpg' %}" alt="">
+      <h3>Kit de Teclado y Mouse Inalámbrico Logitech</h3>
+      <p>
+        <b>Descripción:</b> Kit ergonómico con conectividad inalámbrica, silencioso y de larga
+        duración de batería.
+  
+      </p>
+      <p><b>Conectividad:</b> USB</p>
+      <p><b>Compatibilidad:</b> Windows y macOS</p>
+  
+      <p>
+        <b>Garantía:</b> 1 año
+      </p>
+      <p><b>Precio:</b> $3,299 MXN</p>
+    </div>
+  </div>
+  
+  <div class="productos">
+    <div class="producto">
+      <img src="{% static 'img/audifonos.jpg' %}" alt="">
+      <h3>Audífonos con micrófono Jabra</h3>
+      <p>
+        <b>Descripción:</b> CAudífonos profesionales con cancelación de ruido y micrófono
+        integrado
+      </p>
+      <p><b>Conectividad:</b> USB, Bluetooth</p>
+      <p><b>Compatibilidad:</b> Windows, macOS, Android, iOS</p>
+  
+      <p>
+        <b>Garantía:</b> 1 año
+      </p>
+      <p><b>Precio:</b> $5,000 MXN</p>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const searchInput = document.getElementById("search");
+  const productos = document.querySelectorAll(".producto");
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    productos.forEach(producto => {
+      const nombre = producto.querySelector("h3").textContent.toLowerCase();
+      if (nombre.includes(searchTerm)) {
+        producto.style.display = "block";
+      } else {
+        producto.style.display = "none";
+      }
+    });
+  });
+</script>
+
+
+{% endblock content %}
