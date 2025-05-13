@@ -1,10 +1,10 @@
 :root {
-    --header-bg-color: #4a6fa5;
-    --select-tab-border: #042352;
-    --select-tab-shadow: #033a8b;
-    --button-shadow: #042352;
-    --header-h2-color: white;
-    --header-text-color: white;
+--header-bg-color: #b22222;    /* Rojo fuego */
+--select-tab-border: #800000;  /* Rojo oscuro */
+--select-tab-shadow: #881010;  /* Marrón rojizo */
+--button-shadow: #800000;      /* Rojo oscuro */
+--header-h2-color: white;      /* Blanco */
+--header-text-color: white;    /* Blanco */
 }
   
 
