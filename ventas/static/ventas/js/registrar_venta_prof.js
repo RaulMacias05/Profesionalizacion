@@ -126,6 +126,7 @@ registrarVentaBtn.addEventListener("click", function () {
 
 cancelarPagarBtn.addEventListener("click", function () {
   resetVentaEstado();
+  // reload the page to reset the state
 });
 
 confirmarVentaBtn.addEventListener("click", function () {
@@ -242,7 +243,12 @@ function enviarVenta(datosFactura = null) {
     },
     body: formData
   })
-  .then(res => res.json())
+  .then(res => {
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json(); // Intenta convertir la respuesta a JSON
+    })
   .then(data => {
     if (data.status === "success") {
       window.location.reload();
@@ -256,7 +262,9 @@ function enviarVenta(datosFactura = null) {
 }
 
 function clearFormulario() {
-  facturaForm.reset();
+  if (facturaForm) {
+    facturaForm.reset();
+  }
 }
 
 function removeSuccessMessage() {
@@ -271,6 +279,12 @@ function resetVentaEstado() {
   facturacionModal.style.display = "none";
   facturaForm.style.display = "none";
   modalOverlay.style.display = "none";
+  
+  productos.forEach(producto => {
+    const cantidadSpan = producto.querySelector(".cantidad");
+    cantidadSpan.textContent = 0;
+  });
+
 
   carrito = [];
   total = 0;
@@ -296,11 +310,3 @@ function actualizarRegistrarVentaBtnState() {
     registrarVentaBtn.disabled = false;
   }
 }
-
-
-
-
-
-
-
-

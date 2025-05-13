@@ -224,3 +224,18 @@
 button {
   margin-top: 10px;
 }
+
+
+#success_message {
+  display: none;
+}
+
+#btn_regresar {
+  display: none;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

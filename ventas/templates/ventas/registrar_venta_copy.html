@@ -128,7 +128,7 @@
       <img src="{% static 'img/audifonos.jpg' %}" alt="">
       <h3>Audífonos con micrófono Jabra</h3>
       <p>
-        <b>Descripción:</b> CAudífonos profesionales con cancelación de ruido y micrófono
+        <b>Descripción:</b> Audífonos profesionales con cancelación de ruido y micrófono
         integrado
       </p>
       <p><b>Conectividad:</b> USB, Bluetooth</p>
@@ -175,9 +175,10 @@
     {% csrf_token %}
     <button type="button" id="confirmar_venta">Confirmar Compra</button>
     <button type="button" id="cancelar_venta">Cancelar</button>
+    <p id="success_message">Compra exitosa</p>
+    <button type="button" id="btn_regresar">Regresar</button>
   </form>
 </div>
-
 
 <div class="facturacion_modal" id="facturacion_modal" style="display: none;">
   <h2>¿Deseas facturar esta compra?</h2>
@@ -212,7 +213,7 @@
     <option value="otros">Otros</option>
   </select>
   
-  <button type="submit">Enviar</button>
+  <button type="submit" id="enviar_factura">Enviar</button>
 </div>
 
 
@@ -229,5 +230,5 @@
 <script>
   const registrarVentaUrl = "{% url 'ventas:registrar_venta_copy' %}";
 </script>
-<script src="{% static 'ventas/js/registrar_venta_prof.js' %}"></script>
+<script src="{% static 'ventas/js/reg_venta.js' %}"></script>
 {% endblock scripts %}
