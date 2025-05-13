@@ -7,7 +7,7 @@ from ventas.models import Venta
 
 # Create your views here.
 def signin(request):
-    return redirect('usuarios:signin')
+    return redirect('core:inicio')
 
 def inicio(request):
     ventas = Venta.objects.all()

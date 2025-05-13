@@ -104,6 +104,18 @@ function actualizarModal() {
   modalSubtotal.textContent = `$${subtotal.toFixed(2)}`;
   modalIva.textContent = `$${iva.toFixed(2)}`;
   modalTotal.textContent = `$${totalModal.toFixed(2)}`;
+
+  // Remove success state UI if exists
+  removeSuccessMessage();
+  // Show the original Confirmar and Cancelar buttons
+  confirmarVentaBtn.style.display = "inline-block";
+  cancelarVentaBtn.style.display = "inline-block";
+
+  // Remove custom Regresar button if it exists
+  const regresarBtn = document.getElementById("btn_regresar");
+  if(regresarBtn) {
+    regresarBtn.remove();
+  }
 }
 
 registrarVentaBtn.addEventListener("click", function () {
@@ -113,11 +125,7 @@ registrarVentaBtn.addEventListener("click", function () {
 });
 
 cancelarPagarBtn.addEventListener("click", function () {
-  carrito = [];
-  total = 0;
-  actualizarResumen();
-  ventaModal.style.display = "none";
-  modalOverlay.style.display = "none";
+  resetVentaEstado();
 });
 
 confirmarVentaBtn.addEventListener("click", function () {
@@ -125,18 +133,67 @@ confirmarVentaBtn.addEventListener("click", function () {
   facturacionModal.style.display = "block";
 });
 
-// Si elige "No" → enviar solo los productos
+// Handler for facturar No; shows success message and Regresar button
 facturarNoBtn.addEventListener("click", function () {
   facturacionModal.style.display = "none";
-  enviarVenta();
+  facturaForm.style.display = "none";
+
+  ventaModal.style.display = "block";
+  modalOverlay.style.display = "block";
+
+  // Clear ticket list (hide products)
+  ticketList.innerHTML = "";
+
+  // Hide Confirmar and Cancelar buttons
+  confirmarVentaBtn.style.display = "none";
+  cancelarVentaBtn.style.display = "none";
+
+  // Add success message if not already present
+  let successMsg = document.getElementById("success_message");
+  if(!successMsg) {
+    successMsg = document.createElement("div");
+    successMsg.id = "success_message";
+    successMsg.style.marginTop = "20px";
+    successMsg.style.fontSize = "18px";
+    successMsg.style.fontWeight = "bold";
+    successMsg.style.color = "green";
+    successMsg.textContent = "Compra exitosa";
+    ventaModal.appendChild(successMsg);
+  }
+
+  // Add Regresar button if not already present
+  let regresarBtn = document.getElementById("btn_regresar");
+  if(!regresarBtn) {
+    regresarBtn = document.createElement("button");
+    regresarBtn.id = "btn_regresar";
+    regresarBtn.textContent = "Regresar";
+    // Style similarly to the cancelarVentaBtn
+    regresarBtn.style.marginTop = "15px";
+    regresarBtn.style.padding = "8px 15px";
+    regresarBtn.style.fontSize = "16px";
+    regresarBtn.style.cursor = "pointer";
+    regresarBtn.style.backgroundColor = "#f44336";  // Red similar to cancel
+    regresarBtn.style.color = "white";
+    regresarBtn.style.border = "none";
+    regresarBtn.style.borderRadius = "4px";
+    regresarBtn.style.display = "inline-block";
+
+    ventaModal.appendChild(regresarBtn);
+
+    // Regresar button click handler: close modal & reset
+    regresarBtn.addEventListener("click", function() {
+      resetVentaEstado();
+    });
+  }
+
+  // Clear carrito and resumen for new state
+  carrito = [];
+  total = 0;
+  actualizarResumen();
+  clearFormulario();
 });
 
 // Si elige "Sí" → mostrar formulario de facturación
-facturarSiBtn.addEventListener("click", function () {
-  facturacionModal.style.display = "none";
-  facturaForm.style.display = "block";
-});
-
 facturarSiBtn.addEventListener("click", function () {
   facturacionModal.style.display = "none";
   facturaForm.style.display = "block";
@@ -155,18 +212,14 @@ enviarFacturaBtn.addEventListener("click", function (e) {
     return;
   }
 
-    alert("En unos días se te enviará un correo");
-
- // Ocultar el formulario de facturación y resetear estado para nueva compra
   facturaForm.style.display = "none";
   ventaModal.style.display = "none";
   facturacionModal.style.display = "none";
   modalOverlay.style.display = "none";
-  
+
   carrito = [];
   total = 0;
   actualizarResumen();
-  actualizarRegistrarVentaBtnState();
   clearFormulario();
   enviarVenta({ nombre, rfc, direccion });
 });
@@ -189,15 +242,65 @@ function enviarVenta(datosFactura = null) {
     },
     body: formData
   })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === "success") {
-        alert("¡Venta registrada exitosamente!");
-        window.location.reload();
-      } else {
-        alert("Error: " + data.message);
-      }
-    })
-    .catch(error => console.error("Error:", error));
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      window.location.reload();
+    } else {
+      console.error("Error en venta:", data.message);
+    }
+  })
+  .catch(error => {
+    console.error("Error:", error);
+  });
 }
+
+function clearFormulario() {
+  facturaForm.reset();
+}
+
+function removeSuccessMessage() {
+  const successMsg = document.getElementById("success_message");
+  if(successMsg) {
+    successMsg.remove();
+  }
+}
+
+function resetVentaEstado() {
+  ventaModal.style.display = "none";
+  facturacionModal.style.display = "none";
+  facturaForm.style.display = "none";
+  modalOverlay.style.display = "none";
+
+  carrito = [];
+  total = 0;
+  actualizarResumen();
+  clearFormulario();
+
+  // Remove success message and regresar button from modal
+  removeSuccessMessage();
+  const regresarBtn = document.getElementById("btn_regresar");
+  if(regresarBtn) {
+    regresarBtn.remove();
+  }
+
+  // Make sure the Confirmar and Cancelar buttons are back visible for next usage
+  confirmarVentaBtn.style.display = "inline-block";
+  cancelarVentaBtn.style.display = "inline-block";
+}
+
+function actualizarRegistrarVentaBtnState() {
+  if(carrito.length === 0) {
+    registrarVentaBtn.disabled = true;
+  } else {
+    registrarVentaBtn.disabled = false;
+  }
+}
+
+
+
+
+
+
+
 
