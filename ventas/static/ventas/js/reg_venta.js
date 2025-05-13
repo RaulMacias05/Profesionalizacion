@@ -151,9 +151,13 @@ const Venta = {
     enviar(datosFactura = null) {
         console.log("Enviando datos de venta...");
 
-        const formData = new FormData(UI.elementos.ventaForm);
+        const formData = new FormData();
         formData.append("productos", JSON.stringify(Carrito.items));
         formData.append("total", Carrito.total);
+
+        console.log("Datos de formData:", formData);
+        console.log("Datos de carrito:", formData.get("productos"));
+        console.log("Total de carrito:", formData.get("total"));
 
         if (datosFactura) {
             formData.append("nombre", datosFactura.nombre);
@@ -263,9 +267,9 @@ const Facturacion = {
         UI.elementos.facturacionModal.style.display = "none";
         UI.elementos.modalOverlay.style.display = "none";
 
-        Venta.resetVentaEstado();
-
         Venta.enviar({ nombre, rfc, direccion });
+        
+        Venta.resetVentaEstado();
     }
 };
 

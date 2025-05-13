@@ -73,4 +73,4 @@ def registrar_usuario(request):
       
 def signout(request):
     logout(request)
-    return redirect('core:signin')
+    return redirect('usuarios:signin')
