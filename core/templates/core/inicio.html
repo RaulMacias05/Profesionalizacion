@@ -8,21 +8,34 @@
 
 {% block content %}
 
-<div class="content">
-    <div class="titulo-seccion">
-        <h1 class="titulo">Panel Administrativo</h1>
-        <hr>
-    </div>
-</div>
 
-<div class="cajas">
-    <div class="caja">
-        <p class="titulo-caja">Ventas de hoy</p>
-        <p class="numero-caja">
-            {{ ventas_hoy }} 
-        </p>
-    </div>
-</div>
+<!-- Hero Section -->
 
+<!-- Features Section -->
+<section class="section" id="features">
+  <h2>Bienvenido.</h2>
+  <div class="features">
+    <div class="feature-card">
+      <img src="{% static 'img/monitor2.jpg' %}" alt="Productos Destacados">
+      <h3>Productos de Calidad</h3>
+      <p>Encuentra la mejor selección de productos tecnológicos con garantía y soporte confiable.</p>
+    </div>
+    <div class="feature-card">
+      <img src="{% static 'img/laptop2.jpg' %}" alt="Ventas">
+      <h3>¡Estrena esa laptop que tanto deseas!</h3>
+      <p> Fluidez para tus proyectos, tareas y reuniones, sin interrupciones.</p>
+    </div>
+    <div class="feature-card">
+      <img src="{% static 'img/audifonos.jpg' %}" alt="Soporte">
+      <h3>¡Haz que te escuchen con claridad!</h3>
+      <p>Sonido nítido y micrófono ideal para clases, trabajo y tus momentos de juego.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="section call-to-action">
+  <button onclick="window.location.href='{% url 'ventas:registrar_venta_copy' %}'">Ir a comprar</button>
+</section>
 
 {% endblock content %}
