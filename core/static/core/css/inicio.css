@@ -62,7 +62,7 @@
     margin: 3rem 0;
   }
   .call-to-action button {
-    background-color: #007bff;
+    background-color: #b40808;
     color: white;
     border: none;
     padding: 1rem 2.5rem;
@@ -72,7 +72,7 @@
     transition: background-color 0.3s ease;
   }
   .call-to-action button:hover {
-    background-color: #0056b3;
+    background-color: #ec2c2c;
   }
   /* Responsive */
   @media (max-width: 768px) {
