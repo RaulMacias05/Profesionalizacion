@@ -12,6 +12,11 @@ const ticketList = document.getElementById("ticket_list");
 const modalSubtotal = document.getElementById("modal_subtotal");
 const modalIva = document.getElementById("modal_iva");
 const modalTotal = document.getElementById("modal_total");
+const facturacionModal = document.getElementById("facturacion_modal");
+const facturarSiBtn = document.getElementById("facturar_si");
+const facturarNoBtn = document.getElementById("facturar_no");
+const facturaForm = document.getElementById("factura_form");
+const enviarFacturaBtn = facturaForm.querySelector("button[type='submit']");
 
 let carrito = [];
 let total = 0;
@@ -19,7 +24,7 @@ let total = 0;
 productos.forEach(producto => {
   const id = producto.dataset.id;
   const precio = parseFloat(producto.dataset.precio);
-  const nombre = producto.querySelector("h3").textContent; // *** CAMBIO: agrego el nombre del producto aquí ***
+  const nombre = producto.querySelector("h3").textContent;
 
   const btnSumar = producto.querySelector(".sumar");
   const btnRestar = producto.querySelector(".restar");
@@ -34,7 +39,7 @@ productos.forEach(producto => {
         id,
         cantidad: 1,
         precio,
-        nombre // *** CAMBIO: guardo el nombre en carrito ***
+        nombre
       });
     }
     cantidadSpan.textContent = carrito.find(p => p.id === id).cantidad;
@@ -75,12 +80,10 @@ function actualizarResumen() {
 }
 
 function actualizarModal() {
-  // Limpiar lista anterior
   ticketList.innerHTML = "";
   if(carrito.length === 0) {
     ticketList.innerHTML = "<p>No hay productos seleccionados.</p>";
   } else {
-    // Crear items con nombre, cantidad, precio unitario y subtotal
     carrito.forEach(item => {
       const subtotalItem = item.precio * item.cantidad;
       const divItem = document.createElement("div");
@@ -104,8 +107,7 @@ function actualizarModal() {
 }
 
 registrarVentaBtn.addEventListener("click", function () {
-  actualizarModal(); // *** CAMBIO: agregar llamada para actualizar info del modal antes de mostrarlo ***
-  // Mostrar el modal y la superposición modal
+  actualizarModal();
   ventaModal.style.display = "block";
   modalOverlay.style.display = "block";
 });
@@ -119,9 +121,67 @@ cancelarPagarBtn.addEventListener("click", function () {
 });
 
 confirmarVentaBtn.addEventListener("click", function () {
+  ventaModal.style.display = "none";
+  facturacionModal.style.display = "block";
+});
+
+// Si elige "No" → enviar solo los productos
+facturarNoBtn.addEventListener("click", function () {
+  facturacionModal.style.display = "none";
+  enviarVenta();
+});
+
+// Si elige "Sí" → mostrar formulario de facturación
+facturarSiBtn.addEventListener("click", function () {
+  facturacionModal.style.display = "none";
+  facturaForm.style.display = "block";
+});
+
+facturarSiBtn.addEventListener("click", function () {
+  facturacionModal.style.display = "none";
+  facturaForm.style.display = "block";
+});
+
+// Cuando se envía el formulario de facturación
+enviarFacturaBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const nombre = document.getElementById("nombre").value;
+  const rfc = document.getElementById("rfc").value;
+  const direccion = document.getElementById("direccion").value;
+
+  if (!nombre || !rfc || !direccion) {
+    alert("Por favor completa todos los campos de facturación.");
+    return;
+  }
+
+    alert("En unos días se te enviará un correo");
+
+ // Ocultar el formulario de facturación y resetear estado para nueva compra
+  facturaForm.style.display = "none";
+  ventaModal.style.display = "none";
+  facturacionModal.style.display = "none";
+  modalOverlay.style.display = "none";
+  
+  carrito = [];
+  total = 0;
+  actualizarResumen();
+  actualizarRegistrarVentaBtnState();
+  clearFormulario();
+  enviarVenta({ nombre, rfc, direccion });
+});
+
+function enviarVenta(datosFactura = null) {
   const formData = new FormData(ventaForm);
   formData.append("productos", JSON.stringify(carrito));
   formData.append("total", total);
+
+  if (datosFactura) {
+    formData.append("nombre", datosFactura.nombre);
+    formData.append("rfc", datosFactura.rfc);
+    formData.append("direccion", datosFactura.direccion);
+  }
+
   fetch("{% url 'ventas:registrar_venta' %}", {
     method: "POST",
     headers: {
@@ -132,16 +192,12 @@ confirmarVentaBtn.addEventListener("click", function () {
     .then(res => res.json())
     .then(data => {
       if (data.status === "success") {
-        alert(data.message);
+        alert("¡Venta registrada exitosamente!");
         window.location.reload();
       } else {
         alert("Error: " + data.message);
       }
     })
     .catch(error => console.error("Error:", error));
-});
+}
 
-cancelarVentaBtn.addEventListener("click", function () {
-  ventaModal.style.display = "none";
-  modalOverlay.style.display = "none";
-});
